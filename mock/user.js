@@ -32,7 +32,7 @@ export default [
       const { username } = config.body
       const token = tokens[username]
 
-      // mock error
+      // // mock error
       if (!token) {
         return {
           code: 60204,

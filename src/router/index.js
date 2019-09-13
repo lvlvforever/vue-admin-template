@@ -59,9 +59,15 @@ export const constantRoutes = [
     path: '/example',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    name: '活动规则',
+    meta: { title: '活动规则', icon: 'example'},
     children: [
+      {
+        path: 'rule',
+        name: '规则设置',
+        component: () => import('@/views/rule/index'),
+        meta: { title: '规则设置', icon: 'table' }
+      },
       {
         path: 'table',
         name: 'Table',

@@ -106,13 +106,16 @@ export default {
       })
     },
     handleLogin() {
+      console.log("handle login")
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
+            console.log("dispatch")
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
+            console.log("dispatch error")
             this.loading = false
           })
         } else {
@@ -121,8 +124,6 @@ export default {
         }
       })
     }
-
-    
   }
 }
 </script>

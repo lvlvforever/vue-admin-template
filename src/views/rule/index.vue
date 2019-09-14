@@ -18,55 +18,10 @@
 
 
 
-        <el-row :model="action">
+        <el-row v-model="action">
         <el-divider content-position="left" class="area-title">行为参数</el-divider>
 
-        <el-col :span="8" >
-                <el-card class="box-card" shadow="hover">
-                    <div slot="header" class="clearfix">
-                        <span>行为完成标志</span>
-                    </div>
-                    <div>
-                <el-form  label-width="100px" v-for="input in action.inputs">
-                        <el-form-item label="名称">
-                            <span>{{input.name}}</span>
-                        </el-form-item>
-                        <el-form-item label="描述">
-                            <span>{{input.description}}</span>
-                        </el-form-item>
-                        <el-form-item label="方法">
-                            <span>{{input.methodName}}</span>
-                        </el-form-item>
-                        
-                         <span v-show="input.inParams && input.inParams.length != 0">入参</span>
-
-                        <el-form-item v-for="(item,index) in input.inParams" :label="item.name" prop="name">
-                            <el-input v-model="item.value" :placeholder="item.description"></el-input>
-                        </el-form-item>
-
-
-
-                        <span>返回值</span>
-                        <el-form-item label="说明">
-                            <span>{{input.returnValue}}</span>
-                        </el-form-item>
-
-                        <!-- <el-form-item v-for="(input,index) in event.inputs" :label="input.name" >
-                            <el-input v-model="input.description" :disabled="true" ></el-input>
-                        </el-form-item> -->
-                        <el-divider></el-divider>
-
-                    </el-form>
-
-                        
-                    </div>
-                    
-                    
-
-
-                </el-card>
-
-            </el-col>
+        
 
  <el-col :span="8" >
                 <el-card class="box-card" shadow="hover">
@@ -91,41 +46,43 @@
 
             </el-col>
 
-<el-col :span="8" >
+
+        <el-col :span="8" v-for="method in action.methods">
                 <el-card class="box-card" shadow="hover">
                     <div slot="header" class="clearfix">
-                        <span>输出</span>
+                        <div>{{method.name}}</div>
                     </div>
-                    <el-form  label-width="100px" v-for="output in action.outputs">
-                        <el-form-item label="名称">
-                            <span>{{output.name}}</span>
+                <el-form  label-width="100px">
+                        <el-form-item label="方法名称">
+                            <span>{{method.methodName}}</span>
                         </el-form-item>
-                        <el-form-item label="描述">
-                             <span>{{output.description}}</span>
-                        </el-form-item>
-                        <el-form-item label="方法">
-                             <span>{{output.methodName}}</span>
-                        </el-form-item>
-                        <span v-show="output.inParams && output.inParams.length != 0">入参</span>
-                        <el-form-item v-for="(value,key,index) in output.inParams" :label="key">
-                            <el-input v-model="output.inParams[key]"></el-input>
-                        </el-form-item>
-                        <h4>返回值</h4>
-                          <el-form-item label="说明">
-                              <span>{{output.returnValue}}</span>
-                        </el-form-item>
-                        <!-- <el-form-item v-for="(input,index) in event.inputs" :label="input.name" >
-                            <el-input v-model="input.description" :disabled="true" ></el-input>
-                        </el-form-item> -->
-                        <el-divider></el-divider>
-                    </el-form>
                     
+                
+                         <div v-show="method.inParams && method.inParams.length != 0" style="margin-bottom:10px;">入参</div>
+
+                        <el-form-item v-for="(item,index) in method.inParams" :label="item.name">
+                            <el-col :span="4">
+                                <span>{{item.type}}</span>
+                            </el-col>
+                            <el-col :span="18">
+                                   <el-input v-model="item.value" :placeholder="item.description"></el-input>
+                            </el-col>
+
+                        </el-form-item>
+
+                        <div style="margin-bottom:10px;">返回值</div>
+                        <div>{{method.returnValue}}</div>
+                        <el-divider></el-divider>
+
+                    </el-form>
 
                 </el-card>
-
             </el-col>
-           
-            
+
+
+
+
+
 
         </el-row>
 
@@ -234,35 +191,11 @@ export default {
         refreshUserAction: function () {
             let that = this
           getUserActionList().then((response) =>{
-            that.actions = response.data.actions
-            console.log(response.data.actions)
+            that.actions = response.actions
+            console.log(response.actions)
            }).catch(((response) => {
                console.log(response)
            }))
-            // this.actions = [{
-            //     id: 1,
-            //     name: "用户付费",
-            //     clazz:"UserPayed",
-            //     description:"",
-            //     methods:[
-            //         {
-            //             name:"用户付费金额",
-            //             methodName:"checkPayedCount",
-            //             inParams:[
-            //                 {
-            //                     name:"count",
-            //                     type:"Long",
-            //                     description:"用户付费的数量(书币/阅点)"
-            //                 }
-
-
-            //             ],
-            //             returnValue:"true=用户付费了count书币/阅点 false=未完成付费"
-            //         }
-
-            //     ]
-            // },
-            // ];
         },
 
         addAction: function (action) {
